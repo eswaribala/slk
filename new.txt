@@ -1,0 +1,162 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Global Claim | New Claims</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <!-- Bootstrap 3.3.6 -->
+  <link rel="stylesheet" href="Resources/Bootstrap/3.3.7/css/bootstrap.min.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+  <!-- DataTables -->
+  <link rel="stylesheet" href="Plugins/datatables/dataTables.bootstrap.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="Stylesheets/CSS/AdminLTE.min.css">
+  <!-- AdminLTE Skins. Choose a skin from the css/skins
+       folder instead of downloading all of them to reduce the load. -->
+  <link rel="stylesheet" href="Stylesheets/Skins/_all-skins.min.css">
+  <!-- <script src="Resources/jQuery/3.1.0/jquery-3.1.0.min.js"></script>
+  <script src="Resources/AngularJS/v1.5.8/angular.min.js"></script>
+<script src="Resources/AngularJS/v1.5.5/angular.js"></script> -->
+
+<script src="jquery/jquery.js"></script>
+
+    
+ <script src="bootstrap/js/bootstrap.min.js"></script>
+ 
+
+<script type="text/javascript" src="lib/angular.js"></script>
+<script type="text/javascript" src="lib/angular-messages.js"></script>
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="">
+
+ <!-- Main Header -->
+		 <div ng-include="'ClaimOfficerNavigation.html'"></div>
+  <!-- Left side column. contains the logo and sidebar -->
+  
+
+		
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1><br>
+        CLAIMS TABLE
+       
+      </h1>
+      
+    </section>
+
+    <!-- Main content -->
+    <section class="content" ng-app="ClaimModule">
+      <div class="row" >
+        <div class="col-xs-12">
+        
+          <div class="box">
+            <div class="box-header">
+            
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+              <div ng-controller="ClaimInboxController">
+<table id="claimTbl"  class="table table-bordered table-striped">
+<tr>
+<th></th>
+<th>Claim Id</th>
+<th>Accident Date</th>
+<th>Accident Time</th>
+
+<th>Exact Place</th>
+<th>Destination</th>
+<th>Purpose</th>
+<th>PR Status</th>
+<th>PS</th>
+<th>PC</th>
+
+<th>NOP</th>
+<th>PNo</th>
+<th>RegNo</th>
+<th>Assign</th>
+</tr>
+<tr  ng-repeat="row in data ">
+<td><input type="checkbox" ng-init="checked=false"  ng-model="checked" ng-change="change(row)"> </td>
+ <td ng-repeat="col in row track by $index">
+ {{col}}
+ </td>
+ <td>
+ <select id="userlist" ng-model="user" selected ng-change="changeUser(user.primarymobileNo)"
+ 
+
+    ng-options="udata.primarymobileNo+'-'+udata.firstName+'-'+udata.address+'-'+udata.role for udata in userData">
+
+ </select>
+ </td> 
+ 
+</tr>
+              </table>
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+  <footer class="main-footer">
+    <div class="pull-right hidden-xs">
+        </div>
+    <strong>Copyright &copy; 2016 <a href="">Global Claim</a></strong> All rights
+    reserved.
+  </footer>
+
+  <!-- Control Sidebar -->
+  <!-- /.control-sidebar -->
+  <!-- Add the sidebar's background. This div must be placed
+       immediately after the control sidebar -->
+  <div class="control-sidebar-bg"></div>
+</div>
+<!-- ./wrapper -->
+
+<!-- jQuery 2.2.3 -->
+
+
+<script src="Resources/Bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<script src="Plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="Plugins/datatables/dataTables.bootstrap.min.js"></script>
+<!-- SlimScroll -->
+<script src="Plugins/slimScroll/jquery.slimscroll.min.js"></script>
+<!-- FastClick -->
+<script src="Plugins/fastclick/fastclick.js"></script>
+<!-- AdminLTE App -->
+<script src="Scripts/JavaScript/app.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+
+<!-- page script -->
+<script>
+  $(function () {
+    $("#example1").DataTable();
+    $('#example2').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false
+    });
+  });
+</script>
+ <script type="text/javascript" src="Scripts/AngularJS/claim.js"  ></script>
+ 
+</body>
+</html>
