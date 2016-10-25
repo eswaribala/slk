@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+<link rel="stylesheet" href="bootstrap/css/bootstrap.css">
+ <link rel="stylesheet" href="bootstrap/css/bootstrap-theme.min.css">
+ <script src="jquery/jquery.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="lib/angular.js"></script>
+<script type="text/javascript" src="lib/angular-messages.js"></script>
+<script type="text/javascript" src="scripts/claim.js"></script>
+</head>
+<body ng-app="ClaimModule">
+<section class="container"  ng-controller="ViewClaimController">
+<div class="col-md-4 col-md-offset-4 ">
+<div class="panel panel-default">
+  <div class="panel-heading">
+   <strong>  Claim Form  </strong>
+  </div>
+  <div class="panel-body">
+<form name="claimForm" ng-submit="submit()">
+<div class="form-group input-group">
+ <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
+<input type="long" name="claimId" ng-model="claimId" class="form-control"   required>
+</div>
+<div ng-messages="claimForm.claimId.$error"  >
+  <div ng-message="required">Claim No required</div>
+</div>
+
+<input type="submit" class="btn btn-success" value="submit">
+</form>
+</div>
+</div>
+</div>
+
+</section>
+</body>
+</html>
+-------------------------------------------------------------
+cModule.controller('ViewClaimController',['$scope','$http',function($scope,$http)
+                                      {
+	$scope.claimId=0;
+	$scope.submit=function()
+	{
+		
+		console.log($scope.claimId);
+		
+      
+       		$http(
+       				{
+       					 method: 'POST',
+       			          dataType: "jsonp",
+       			          data:$scope.claimId,
+       			          headers: {
+       			              'Content-Type': 'application/json;charset=UTF-8'
+       			          },
+       			          url: 'http://localhost:8080/ClaimManagement_SLK_Server/claimById/'
+
+       					
+       				}).success(function(res)
+       						{
+       					       console.log(res);
+       					    window.open("data:application/pdf;base64," + res[1]);
+       						}).error(function(msg){
+       							console.log(msg);
+       						})
+		    
+	}
+	
+	
+	
+  }]);
+
+
+
+
+-----------------------------------------------------------------
+
+@RequestMapping(value = "/claimById/", method = RequestMethod.POST,
+			 consumes = {"application/json"},		 produces={"application/json"})
+	    public  @ResponseBody List
+	    getClaimInfoById(@RequestBody long claimId) {
+	        
+	   System.out.println(claimId);
+	    
+	   Object[] result= claimDao.getRaisedClaimsById(claimId);
+	   
+	    ByteArrayOutputStream baos = new ByteArrayOutputStream(); 
+	   File file = new File("F:/Bagmane_Hib_Training/ClaimManagement_SLK_Server/docs/"+result[1]);
+	   byte[] buffer = new byte[(int) file.length()];
+	   int bytesRead;
+	   List resultList=new ArrayList();
+	   try {
+		FileInputStream fin=new FileInputStream(file);
+		
+	    while ((bytesRead = fin.read(buffer)) != -1)
+	    {
+	        baos.write(buffer, 0, bytesRead);
+	    }
+	    System.out.println(buffer.length);
+	    BASE64Encoder encoder = new BASE64Encoder();
+        String docString= encoder.encode(buffer);
+        
+        resultList.add(result);
+        resultList.add(docString);
+	} catch (FileNotFoundException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	   
+	   return resultList;
+	        
+
+	    }
+---------------------------------------------------------
+public Object[] getRaisedClaimsById(long Id)
+	{
+		String query="SELECT c.claimId,c.docName FROM Claim c JOIN c.policy p JOIN c.policy.vehicle v where c.claimId=:cId";
+		Query tquery = em.createQuery(query,Object[].class);
+	    tquery.setParameter("cId", Id);
+	    return (Object[]) tquery.getSingleResult();
+	
+	}
+	
